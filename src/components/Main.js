@@ -57,7 +57,9 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
                  className="gallery">
           <ul className="gallery__grid">
             { cards.map(({ _id, ...card }) =>
-                <Card cardData={ card } key={ _id } onCardClick={onCardClick}/>
+                (<Card cardData={ card }
+                       key={ _id }
+                       onCardClick={ onCardClick }/>)
             )
             }
           </ul>

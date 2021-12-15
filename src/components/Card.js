@@ -11,7 +11,10 @@ function Card({ cardData, onCardClick }) {
       <li className="gallery__item">
         <div className="gallery__image-container">
           <div className="gallery__image-wrapper">
-            <img className="gallery__image" src={ link } onClick={handleCardClick}/>
+            <img className="gallery__image"
+                 src={ link }
+                 alt={ `Карточка с фотографией. Название: ${ name }` }
+                 onClick={ handleCardClick }/>
           </div>
         </div>
         <button className="delete gallery__delete-btn"

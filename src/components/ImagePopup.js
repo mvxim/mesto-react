@@ -30,14 +30,14 @@ function ImagePopup(props) {
   
   return (
       <section aria-label="Полноэкранный просмотр картинки"
-               className={ `modal modal_type_picture page__modal ${ card ? "modal_active" : "" }` }>
+               className={ `modal modal_type_picture page__modal ${ card.link !== '' ? "modal_active" : "" }` }>
         <figure className="modal__figure">
           <button className="modal__close-btn"
                   type="button"
           onClick={onClose}/>
-          <img alt="Теплый пушистый котенок"
+          <img alt={`Фотография из карточки. Название: ${name}`}
                className="modal__image"
-               src={ link }/>
+               src={ link ? link : "" }/>
           <figcaption className="modal__caption">{ name }</figcaption>
         </figure>
       </section>
