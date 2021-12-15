@@ -2,7 +2,6 @@ class Api {
   constructor({baseUrl, headers}) {
     this._url = baseUrl
     this._headers = headers
-    this._promises = [this.getUserInfo(), this.getSetOfPlaces()]
   }
   
   _onResponse(res) {
@@ -83,10 +82,6 @@ class Api {
       method: "DELETE",
       headers: this._headers,
     }).then(this._onResponse)
-  }
-  
-  getDataOnPageLoad() {
-    return Promise.all(this._promises)
   }
 }
 

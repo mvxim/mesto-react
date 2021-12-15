@@ -1,4 +1,4 @@
-import React from "react"
+import { useState } from "react"
 import AvatarInputSet from "./AvatarInputSet"
 import CardInputSet from "./CardInputSet"
 import Footer from "./Footer"
@@ -10,9 +10,10 @@ import ProfileInputSet from "./profileInputSet"
 
 function App() {
   
-  const [ isEditAvatarPopupOpen, setIsEditAvatarPopupOpen ] = React.useState(false)
-  const [ isEditProfilePopupOpen, setIsEditProfilePopupOpen ] = React.useState(false)
-  const [ isAddPlacePopupOpen, setIsAddPlacePopupOpen ] = React.useState(false)
+  const [ isEditAvatarPopupOpen, setIsEditAvatarPopupOpen ] = useState(false)
+  const [ isEditProfilePopupOpen, setIsEditProfilePopupOpen ] = useState(false)
+  const [ isAddPlacePopupOpen, setIsAddPlacePopupOpen ] = useState(false)
+  const [ selectedCard, setSelectedCard ] = useState(false)
   
   
   const handleEditAvatarClick = () => {
@@ -27,10 +28,15 @@ function App() {
     setIsAddPlacePopupOpen(!isAddPlacePopupOpen)
   }
   
+  const handleCardClick = (cardData) => {
+    setSelectedCard(cardData)
+  }
+  
   const closeAllPopups = () => {
     setIsEditAvatarPopupOpen(false)
     setIsEditProfilePopupOpen(false)
     setIsAddPlacePopupOpen(false)
+    setSelectedCard(false)
   }
   
   return (
@@ -39,7 +45,8 @@ function App() {
           <Header/>
           <Main onEditAvatar={ handleEditAvatarClick }
                 onEditProfile={ handleEditProfileClick }
-                onAddPlace={ handleAddPlaceClick }/>
+                onAddPlace={ handleAddPlaceClick }
+                onCardClick={ handleCardClick }/>
           <Footer/>
           <PopupWithForm name={ isEditAvatarPopupOpen
                                 ? "avatar"
@@ -74,7 +81,7 @@ function App() {
                          buttonText="Да">
           </PopupWithForm>
           
-          <ImagePopup/>
+          <ImagePopup card={selectedCard} onClose={ closeAllPopups }/>
         </div>
         <template className="gallery__item-template">
           <li className="gallery__item">
