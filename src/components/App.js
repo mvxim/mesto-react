@@ -1,18 +1,27 @@
+import React from "react"
 import Footer from "./Footer"
 import Header from "./Header"
+import ImagePopup from "./ImagePopup"
 import Main from "./Main"
+import PopupWithForm from "./PopupWithForm"
 
 function App() {
+  
+  const [ isEditAvatarPopupOpen, setIsEditAvatarPopupOpen ] = React.useState(false)
+  const [ isEditProfilePopupOpen, setIsEditProfilePopupOpen ] = React.useState(false)
+  const [ isAddPlacePopupOpen, setIsAddPlacePopupOpen ] = React.useState(false)
+  
+  
   const handleEditAvatarClick = () => {
-    document.querySelector(".modal_type_avatar").classList.add("modal_active")
+    setIsEditAvatarPopupOpen(!isEditAvatarPopupOpen)
   }
   
   const handleEditProfileClick = () => {
-    document.querySelector(".modal_type_bio").classList.add("modal_active")
+    setIsEditProfilePopupOpen(!isEditProfilePopupOpen)
   }
   
   const handleAddPlaceClick = () => {
-    document.querySelector(".modal_type_card").classList.add("modal_active")
+    setIsAddPlacePopupOpen(!isAddPlacePopupOpen)
   }
   
   return (
@@ -23,6 +32,72 @@ function App() {
                 onEditProfile={ handleEditProfileClick }
                 onAddPlace={ handleAddPlaceClick }/>
           <Footer/>
+          <PopupWithForm name="avatar"
+                         title="Обновить аватар"
+                         isOpen={ isEditAvatarPopupOpen }>
+            <input aria-label="Поле ввода для ссылки на картинку"
+                   className="modal__input modal__input_field_avatar"
+                   id="field_avatar"
+                   name="avatar-field-link"
+                   placeholder="Ссылка на новую картинку профиля"
+                   required
+                   type="url"/>
+            <span className="modal__error modal__error_field_avatar"/>
+          </PopupWithForm>
+          
+          <PopupWithForm name="bio"
+                         title="Редактировать профиль"
+                         isOpen={ isEditProfilePopupOpen }>
+            <input aria-label="Поле ввода для имени"
+                   className="modal__input modal__input_field_name"
+                   id="field_name"
+                   maxLength="40"
+                   minLength="2"
+                   name="bio-field-name"
+                   placeholder="Ваше имя"
+                   required
+                   type="text"/>
+            <span className="modal__error modal__error_field_name"/>
+            <input aria-label="Поле ввода для описания"
+                   className="modal__input modal__input_field_desc"
+                   id="field_desc"
+                   maxLength="200"
+                   minLength="2"
+                   name="bio-field-desc"
+                   placeholder="Расскажите о себе"
+                   required
+                   type="text"/>
+            <span className="modal__error modal__error_field_desc"/>
+          </PopupWithForm>
+          
+          <PopupWithForm name="card"
+                         title="Новое место"
+                         buttonText="Создать"
+                         isOpen={ isAddPlacePopupOpen }>
+            <input aria-label="Поле ввода для названия карточки"
+                   className="modal__input modal__input_field_title"
+                   id="field_title"
+                   maxLength="30"
+                   minLength="2"
+                   name="card-field-title"
+                   placeholder="Название"
+                   type="text"/>
+            <span className="modal__error modal__error_field_title"/>
+            <input aria-label="Поле ввода для адреса картинки"
+                   className="modal__input modal__input_field_picture"
+                   id="field_picture"
+                   name="card-field-picture"
+                   placeholder="Ссылочка на картиночку"
+                   type="url"/>
+            <span className="modal__error modal__error_field_picture"/>
+          </PopupWithForm>
+          
+          <PopupWithForm name="confirm"
+                         title="Вы уверены?"
+                         buttonText="Да">
+          </PopupWithForm>
+          
+          <ImagePopup/>
         </div>
         <template className="gallery__item-template">
           <li className="gallery__item">

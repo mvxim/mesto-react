@@ -1,6 +1,12 @@
-function PopupWithForm({ name, title, buttonText = "Сохранить", children, ...props }) {
+function PopupWithForm({
+                         name,
+                         title,
+                         buttonText = "Сохранить",
+                         children,
+                         isOpen
+                       }) {
   return (
-      <section className={ `modal modal_type_${ name } page__modal` }>
+      <section className={ `modal modal_type_${ name } page__modal ${ isOpen ? "modal_active" : "" }` }>
         <div className="modal__container">
           <button className="modal__close-btn"
                   type="button"/>
