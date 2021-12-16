@@ -1,6 +1,5 @@
 import { useEffect } from "react"
 
-
 const Popup = ({ isOpen, name, onClose, children }) => {
   
   useEffect(() => {
@@ -21,12 +20,10 @@ const Popup = ({ isOpen, name, onClose, children }) => {
       onClose()
     }
   }
-
-// внутри верстка обертки любого попапа с классом `popup` и добавлением `popup_opened`
+  
   return (
       <section className={ `modal modal_type_${ name } page__modal ${ isOpen ? "modal_active" : "" }` }
                onClick={ handleOverlay }>
-        {/* добавляем контейнер для контента попапа */ }
         <div className="modal__container">
           <button className="modal__close-btn"
                   type="button"
