@@ -1,7 +1,18 @@
-import React from "react"
+import React, { useContext } from "react"
+import { CurrentUserContext } from "../contexts/CurrentUserContext"
 
 function Card({ cardData, onCardClick }) {
-  const { name, link, likes } = cardData
+  const currentUser = useContext(CurrentUserContext)
+  const { name, link, likes, owner } = cardData
+  
+  const isOwn = owner._id === currentUser._id
+  const galleryDeleteButtonClassName = (
+      `delete gallery__delete-btn ${ isOwn ? "" : "delete_hidden" }`
+  )
+  
+  const isLiked = likes.some(like => like._id === currentUser._id)
+  const galleryLikeButtonClassName = (
+      `like gallery__like-btn ${ isLiked ? "like_active" : "" }`)
   
   const handleCardClick = () => {
     onCardClick(cardData)
@@ -17,12 +28,12 @@ function Card({ cardData, onCardClick }) {
                  onClick={ handleCardClick }/>
           </div>
         </div>
-        <button className="delete gallery__delete-btn"
+        <button className={ galleryDeleteButtonClassName }
                 type="button"/>
         <div className="gallery__caption">
           <p className="gallery__text">{ name }</p>
           <div className="gallery__like-btn-wrapper">
-            <button className="like gallery__like-btn"
+            <button className={ galleryLikeButtonClassName }
                     type="button"/>
             <span className="gallery__like-btn-counter">{ likes.length }</span>
           </div>
