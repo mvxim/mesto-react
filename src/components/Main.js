@@ -24,6 +24,12 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
     }).catch(err => console.log(err))
   }
   
+  const handleCardDelete = (card) => {
+    api.removePlace(card._id).then(() => {
+      setCards((cards) => cards.filter(c => c._id !== card._id))
+    }).catch(err => console.log(err))
+  }
+  
   return (
       <main className="main page__main">
         <section aria-label="Профиль пользователя"
@@ -57,7 +63,8 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
                 (<Card cardData={ { ...card, _id } }
                        key={ _id }
                        onCardClick={ onCardClick }
-                       onCardLike={ handleCardLike }/>)
+                       onCardLike={ handleCardLike }
+                       onCardDelete={ handleCardDelete }/>)
             )
             }
           </ul>
