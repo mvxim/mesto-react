@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react"
 import { CurrentUserContext } from "../contexts/CurrentUserContext"
 import api from "../utils/api"
+import EditAvatarPopup from "./EditAvatarPopup"
+import EditProfilePopup from "./EditProfilePopup"
 import Footer from "./Footer"
 import Header from "./Header"
 import ImagePopup from "./ImagePopup"
@@ -8,7 +10,7 @@ import Main from "./Main"
 import PopupWithForm from "./PopupWithForm"
 
 function App() {
-  const [currentUser, setCurrentUser] = useState({
+  const [ currentUser, setCurrentUser ] = useState({
     "name": "",
     "about": "",
     "avatar": "",
@@ -20,24 +22,24 @@ function App() {
   const [ isEditProfilePopupOpen, setIsEditProfilePopupOpen ] = useState(false)
   const [ isAddPlacePopupOpen, setIsAddPlacePopupOpen ] = useState(false)
   const [ selectedCard, setSelectedCard ] = useState({ name: "", link: "" })
-
-
+  
+  
   const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(!isEditAvatarPopupOpen)
   }
-
+  
   const handleEditProfileClick = () => {
     setIsEditProfilePopupOpen(!isEditProfilePopupOpen)
   }
-
+  
   const handleAddPlaceClick = () => {
     setIsAddPlacePopupOpen(!isAddPlacePopupOpen)
   }
-
+  
   const handleCardClick = (cardData) => {
     setSelectedCard(cardData)
   }
-
+  
   const closeAllPopups = () => {
     setIsEditAvatarPopupOpen(false)
     setIsEditProfilePopupOpen(false)
@@ -45,12 +47,26 @@ function App() {
     setSelectedCard({ name: "", link: "" })
   }
   
+  const handleUpdateUser = (newUserInfo) => {
+    api.setUserInfo(newUserInfo).then((newFetchedData) => {
+      setCurrentUser(newFetchedData)
+      closeAllPopups()
+    }).catch()
+  }
+  
+  const handleUpdateAvatar = (newAvatar) => {
+    api.setUserAvatar(newAvatar).then((newFetchedAvatar) => {
+      setCurrentUser(newFetchedAvatar)
+      closeAllPopups()
+    })
+  }
+  
   useEffect(() => {
     api.getUserInfo().then(r => setCurrentUser(r))
   }, [])
-
+  
   return (
-      <CurrentUserContext.Provider value={currentUser}>
+      <CurrentUserContext.Provider value={ currentUser }>
         <div className="page">
           <div className="page__container">
             <Header/>
@@ -59,49 +75,15 @@ function App() {
                   onAddPlace={ handleAddPlaceClick }
                   onCardClick={ handleCardClick }/>
             <Footer/>
-          
-            <PopupWithForm name="avatar"
-                           title="Обновить аватар"
-                           buttonText="Сохранить"
-                           isOpen={ isEditAvatarPopupOpen }
-                           onClose={ closeAllPopups }>
-              <input aria-label="Поле ввода для ссылки на картинку"
-                     className="modal__input modal__input_field_avatar"
-                     id="field_avatar"
-                     name="avatar-field-url"
-                     placeholder="Ссылка на новую картинку профиля"
-                     required
-                     type="url"/>
-              <span className="modal__error modal__error_field_avatar"/>
-            </PopupWithForm>
-          
-            <PopupWithForm name="bio"
-                           title="Редактировать профиль"
-                           buttonText="Сохранить"
-                           isOpen={ isEditProfilePopupOpen }
-                           onClose={ closeAllPopups }>
-              <input aria-label="Поле ввода для имени"
-                     className="modal__input modal__input_field_name"
-                     id="field_name"
-                     maxLength="40"
-                     minLength="2"
-                     name="bio-field-name"
-                     placeholder="Ваше имя"
-                     required
-                     type="text"/>
-              <span className="modal__error modal__error_field_name"/>
-              <input aria-label="Поле ввода для описания"
-                     className="modal__input modal__input_field_desc"
-                     id="field_desc"
-                     maxLength="200"
-                     minLength="2"
-                     name="bio-field-desc"
-                     placeholder="Расскажите о себе"
-                     required
-                     type="text"/>
-              <span className="modal__error modal__error_field_desc"/>
-            </PopupWithForm>
-          
+            
+            <EditAvatarPopup isOpen={ isEditAvatarPopupOpen }
+                             onClose={ closeAllPopups }
+                             onUpdateAvatar={ handleUpdateAvatar }/>
+            
+            <EditProfilePopup isOpen={ isEditProfilePopupOpen }
+                              onClose={ closeAllPopups }
+                              onUpdateUser={ handleUpdateUser }/>
+            
             <PopupWithForm name="card"
                            title="Новое место"
                            buttonText="Создать"
@@ -124,12 +106,12 @@ function App() {
                      type="url"/>
               <span className="modal__error modal__error_field_picture"/>
             </PopupWithForm>
-          
+            
             <PopupWithForm name="confirm"
                            title="Вы уверены?"
                            buttonText="Да">
             </PopupWithForm>
-          
+            
             <ImagePopup card={ selectedCard }
                         onClose={ closeAllPopups }/>
           </div>

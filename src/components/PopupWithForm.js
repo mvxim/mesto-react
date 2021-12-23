@@ -6,14 +6,16 @@ function PopupWithForm({
                          buttonText = "Сохранить",
                          children,
                          isOpen,
-                         onClose
+                         onClose,
+                         onSubmit
                        }) {
   return (
       <Popup isOpen={ isOpen }
              name={ name }
              onClose={ onClose }>
         <form className="modal__form"
-              name={ `${ name }-form` }>
+              name={ `${ name }-form` }
+              onSubmit={ onSubmit }>
           <h2 className="modal__title">{ title }</h2>
           { children }
           <button className="button modal__button"

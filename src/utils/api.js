@@ -24,8 +24,8 @@ class Api {
       headers: this._headers,
       body: JSON.stringify(
           {
-            name: userInfo["bio-field-name"],
-            about: userInfo["bio-field-desc"],
+            name: userInfo.name,
+            about: userInfo.about,
           }
       )
     }).then(this._onResponse)
