@@ -3,33 +3,10 @@ import { CurrentUserContext } from "../contexts/CurrentUserContext"
 import api from "../utils/api"
 import Card from "./Card"
 
-function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
+function Main({ cards, onEditAvatar, onEditProfile, onAddPlace, onCardClick, onCardLike, onCardDelete }) {
   
   const currentUser = useContext(CurrentUserContext)
-  const [ cards, setCards ] = useState([])
-  
-  useEffect(() => {
-    api.getSetOfPlaces()
-        .then((places) => {
-          setCards(places)
-        }).catch(error => {
-      console.log(error)
-    })
-  }, [])
-  
-  const handleCardLike = (card) => {
-    const isLiked = card.likes.some(like => like._id === currentUser._id)
-    api.changeLikeCardStatus(card._id, isLiked).then((newCard) => {
-      setCards((cards) => cards.map((c) => c._id === card._id ? newCard : c))
-    }).catch(err => console.log(err))
-  }
-  
-  const handleCardDelete = (card) => {
-    api.removePlace(card._id).then(() => {
-      setCards((cards) => cards.filter(c => c._id !== card._id))
-    }).catch(err => console.log(err))
-  }
-  
+
   return (
       <main className="main page__main">
         <section aria-label="Профиль пользователя"
@@ -63,8 +40,8 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
                 (<Card cardData={ { ...card, _id } }
                        key={ _id }
                        onCardClick={ onCardClick }
-                       onCardLike={ handleCardLike }
-                       onCardDelete={ handleCardDelete }/>)
+                       onCardLike={ onCardLike }
+                       onCardDelete={ onCardDelete }/>)
             )
             }
           </ul>

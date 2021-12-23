@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { CurrentUserContext } from "../contexts/CurrentUserContext"
 import api from "../utils/api"
+import AddPlacePopup from "./AddPlacePopup"
 import EditAvatarPopup from "./EditAvatarPopup"
 import EditProfilePopup from "./EditProfilePopup"
 import Footer from "./Footer"
@@ -18,11 +19,35 @@ function App() {
     "cohort": ""
   })
   
+  const [ cards, setCards ] = useState([])
+  const [ selectedCard, setSelectedCard ] = useState({ name: "", link: "" })
   const [ isEditAvatarPopupOpen, setIsEditAvatarPopupOpen ] = useState(false)
   const [ isEditProfilePopupOpen, setIsEditProfilePopupOpen ] = useState(false)
   const [ isAddPlacePopupOpen, setIsAddPlacePopupOpen ] = useState(false)
-  const [ selectedCard, setSelectedCard ] = useState({ name: "", link: "" })
   
+  // Элементы UI блока карточек
+  
+  const handleCardLike = (card) => {
+    const isLiked = card.likes.some(like => like._id === currentUser._id)
+    api.changeLikeCardStatus(card._id, isLiked).then((newCard) => {
+      setCards((cards) => cards.map((c) => c._id === card._id ? newCard : c))
+    }).catch(err => console.log(err))
+  }
+  
+  const handleCardDelete = (card) => {
+    api.removePlace(card._id).then(() => {
+      setCards((cards) => cards.filter(c => c._id !== card._id))
+    }).catch(err => console.log(err))
+  }
+  
+  const handleAddPlaceSubmit = (card) => {
+    api.createNewPlace(card).then((newFetchedCard) => {
+      setCards([ newFetchedCard, ...cards ])
+      closeAllPopups()
+    })
+  }
+  
+  // Элементы UI в профиле
   
   const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(!isEditAvatarPopupOpen)
@@ -39,6 +64,8 @@ function App() {
   const handleCardClick = (cardData) => {
     setSelectedCard(cardData)
   }
+  
+  // Элементы UI в попапах
   
   const closeAllPopups = () => {
     setIsEditAvatarPopupOpen(false)
@@ -61,7 +88,15 @@ function App() {
     })
   }
   
+  // Изначальный фетч с сервера
+  
   useEffect(() => {
+    api.getSetOfPlaces()
+        .then((places) => {
+          setCards(places)
+        }).catch(error => {
+      console.log(error)
+    })
     api.getUserInfo().then(r => setCurrentUser(r))
   }, [])
   
@@ -70,10 +105,13 @@ function App() {
         <div className="page">
           <div className="page__container">
             <Header/>
-            <Main onEditAvatar={ handleEditAvatarClick }
+            <Main cards={ cards }
+                  onEditAvatar={ handleEditAvatarClick }
                   onEditProfile={ handleEditProfileClick }
                   onAddPlace={ handleAddPlaceClick }
-                  onCardClick={ handleCardClick }/>
+                  onCardClick={ handleCardClick }
+                  onCardLike={ handleCardLike }
+                  onCardDelete={ handleCardDelete }/>
             <Footer/>
             
             <EditAvatarPopup isOpen={ isEditAvatarPopupOpen }
@@ -84,28 +122,9 @@ function App() {
                               onClose={ closeAllPopups }
                               onUpdateUser={ handleUpdateUser }/>
             
-            <PopupWithForm name="card"
-                           title="Новое место"
-                           buttonText="Создать"
-                           isOpen={ isAddPlacePopupOpen }
-                           onClose={ closeAllPopups }>
-              <input aria-label="Поле ввода для названия карточки"
-                     className="modal__input modal__input_field_title"
-                     id="field_title"
-                     maxLength="30"
-                     minLength="2"
-                     name="card-field-title"
-                     placeholder="Название"
-                     type="text"/>
-              <span className="modal__error modal__error_field_title"/>
-              <input aria-label="Поле ввода для адреса картинки"
-                     className="modal__input modal__input_field_picture"
-                     id="field_picture"
-                     name="card-field-picture"
-                     placeholder="Ссылочка на картиночку"
-                     type="url"/>
-              <span className="modal__error modal__error_field_picture"/>
-            </PopupWithForm>
+            <AddPlacePopup isOpen={ isAddPlacePopupOpen }
+                           onClose={ closeAllPopups }
+                           onPlaceAdd={ handleAddPlaceSubmit }/>
             
             <PopupWithForm name="confirm"
                            title="Вы уверены?"

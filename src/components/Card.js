@@ -15,7 +15,6 @@ function Card({ cardData, onCardClick, onCardLike, onCardDelete }) {
       `like gallery__like-btn ${ isLiked ? "like_active" : "" }`)
   
   const handleCardClick = () => {
-    console.log(cardData)
     onCardClick(cardData)
   }
   
