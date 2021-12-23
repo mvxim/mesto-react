@@ -1,7 +1,7 @@
 import React, { useContext } from "react"
 import { CurrentUserContext } from "../contexts/CurrentUserContext"
 
-function Card({ cardData, onCardClick }) {
+function Card({ cardData, onCardClick, onCardLike }) {
   const currentUser = useContext(CurrentUserContext)
   const { name, link, likes, owner } = cardData
   
@@ -15,7 +15,12 @@ function Card({ cardData, onCardClick }) {
       `like gallery__like-btn ${ isLiked ? "like_active" : "" }`)
   
   const handleCardClick = () => {
+    console.log(cardData)
     onCardClick(cardData)
+  }
+  
+  const handleLikeClick = () => {
+    onCardLike(cardData)
   }
   
   return (
@@ -34,7 +39,8 @@ function Card({ cardData, onCardClick }) {
           <p className="gallery__text">{ name }</p>
           <div className="gallery__like-btn-wrapper">
             <button className={ galleryLikeButtonClassName }
-                    type="button"/>
+                    type="button"
+                    onClick={ handleLikeClick }/>
             <span className="gallery__like-btn-counter">{ likes.length }</span>
           </div>
         </div>

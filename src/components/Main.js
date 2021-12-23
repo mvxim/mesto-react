@@ -6,7 +6,6 @@ import Card from "./Card"
 function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
   
   const currentUser = useContext(CurrentUserContext)
-  
   const [ cards, setCards ] = useState([])
   
   useEffect(() => {
@@ -17,6 +16,13 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
       console.log(error)
     })
   }, [])
+  
+  const handleCardLike = (card) => {
+    const isLiked = card.likes.some(like => like._id === currentUser._id)
+    api.changeLikeCardStatus(card._id, isLiked).then((newCard) => {
+      setCards((cards) => cards.map((c) => c._id === card._id ? newCard : c))
+    }).catch(err => console.log(err))
+  }
   
   return (
       <main className="main page__main">
@@ -48,9 +54,10 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
                  className="gallery">
           <ul className="gallery__grid">
             { cards.map(({ _id, ...card }) =>
-                (<Card cardData={ card }
+                (<Card cardData={ { ...card, _id } }
                        key={ _id }
-                       onCardClick={ onCardClick }/>)
+                       onCardClick={ onCardClick }
+                       onCardLike={ handleCardLike }/>)
             )
             }
           </ul>

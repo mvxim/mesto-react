@@ -1,5 +1,5 @@
 class Api {
-  constructor({baseUrl, headers}) {
+  constructor({ baseUrl, headers }) {
     this._url = baseUrl
     this._headers = headers
   }
@@ -8,18 +8,18 @@ class Api {
     if (res.ok) {
       return res.json()
     }
-    return Promise.reject(`>>> Ошибка: ${res.status}`)
+    return Promise.reject(`>>> Ошибка: ${ res.status }`)
   }
   
   getUserInfo() {
-    return fetch(`${this._url}users/me/`, {
+    return fetch(`${ this._url }users/me/`, {
       method: "GET",
       headers: this._headers
     }).then(this._onResponse)
   }
   
   setUserInfo(userInfo) {
-    return fetch(`${this._url}users/me/`, {
+    return fetch(`${ this._url }users/me/`, {
       method: "PATCH",
       headers: this._headers,
       body: JSON.stringify(
@@ -32,7 +32,7 @@ class Api {
   }
   
   setUserAvatar(avatarLink) {
-    return fetch(`${this._url}users/me/avatar/`, {
+    return fetch(`${ this._url }users/me/avatar/`, {
       method: "PATCH",
       headers: this._headers,
       body: JSON.stringify(
@@ -44,14 +44,14 @@ class Api {
   }
   
   getSetOfPlaces() {
-    return fetch(`${this._url}cards`, {
+    return fetch(`${ this._url }cards`, {
       method: "GET",
       headers: this._headers
     }).then(this._onResponse)
   }
   
-  createNewPlace({name, link}) {
-    return fetch(`${this._url}cards`, {
+  createNewPlace({ name, link }) {
+    return fetch(`${ this._url }cards`, {
       method: "POST",
       headers: this._headers,
       body: JSON.stringify(
@@ -63,22 +63,22 @@ class Api {
     }).then(this._onResponse)
   }
   
-  setLike(cardId) {
-    return fetch(`${this._url}cards/likes/${cardId}`, {
-      method: "PUT",
-      headers: this._headers,
-    }).then(this._onResponse)
-  }
-  
-  removeLike(cardId) {
-    return fetch(`${this._url}cards/likes/${cardId}`, {
-      method: "DELETE",
-      headers: this._headers,
-    }).then(this._onResponse)
+  changeLikeCardStatus(cardId, isLiked) {
+    if (isLiked) {
+      return fetch(`${ this._url }cards/likes/${ cardId }`, {
+        method: "DELETE",
+        headers: this._headers,
+      }).then(this._onResponse)
+    } else {
+      return fetch(`${ this._url }cards/likes/${ cardId }`, {
+        method: "PUT",
+        headers: this._headers,
+      }).then(this._onResponse)
+    }
   }
   
   removePlace(cardId) {
-    return fetch(`${this._url}cards/${cardId}`, {
+    return fetch(`${ this._url }cards/${ cardId }`, {
       method: "DELETE",
       headers: this._headers,
     }).then(this._onResponse)
