@@ -1,12 +1,19 @@
-import { useContext, useEffect, useState } from "react"
+import { useContext } from "react"
 import { CurrentUserContext } from "../contexts/CurrentUserContext"
-import api from "../utils/api"
 import Card from "./Card"
 
-function Main({ cards, onEditAvatar, onEditProfile, onAddPlace, onCardClick, onCardLike, onCardDelete }) {
+function Main({
+                cards,
+                onEditAvatar,
+                onEditProfile,
+                onAddPlace,
+                onCardClick,
+                onCardLike,
+                onCardDeleteClick
+              }) {
   
   const currentUser = useContext(CurrentUserContext)
-
+  
   return (
       <main className="main page__main">
         <section aria-label="Профиль пользователя"
@@ -41,7 +48,7 @@ function Main({ cards, onEditAvatar, onEditProfile, onAddPlace, onCardClick, onC
                        key={ _id }
                        onCardClick={ onCardClick }
                        onCardLike={ onCardLike }
-                       onCardDelete={ onCardDelete }/>)
+                       onCardDeleteClick={ onCardDeleteClick }/>)
             )
             }
           </ul>
