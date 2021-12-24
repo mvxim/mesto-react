@@ -26,6 +26,7 @@ function App() {
   const [ isEditProfilePopupOpen, setIsEditProfilePopupOpen ] = useState(false)
   const [ isAddPlacePopupOpen, setIsAddPlacePopupOpen ] = useState(false)
   const [ isConfirmationPopupOpen, setIsConfirmationPopupOpen ] = useState(false)
+  const [ isLoading, setIsLoading ] = useState(false)
   
   // Элементы UI блока карточек
   
@@ -38,22 +39,33 @@ function App() {
   
   
   const handleAddPlaceSubmit = (card) => {
-    api.createNewPlace(card).then((newFetchedCard) => {
-      setCards([ newFetchedCard, ...cards ])
-      closeAllPopups()
-    })
+    handlePopupLoader(true)
+    api.createNewPlace(card)
+        .then((newFetchedCard) => {
+          setCards([ newFetchedCard, ...cards ])
+          closeAllPopups()
+        })
+        .catch()
+        .finally(() => {
+          handlePopupLoader(false)
+        })
   }
   
   const handleCardDeleteClick = (cardId) => {
     setIsConfirmationPopupOpen(!isConfirmationPopupOpen)
     setCardToRemoveId(cardId)
-    console.log(cardId)
   }
   
   const handleCardDelete = (cardToRemoveId) => {
-    api.removePlace(cardToRemoveId).then(() => {
-      setCards((cards) => cards.filter(c => c._id !== cardToRemoveId))
-    }).catch(err => console.log(err))
+    handlePopupLoader(true)
+    api.removePlace(cardToRemoveId)
+        .then(() => {
+          setCards((cards) => cards.filter(c => c._id !== cardToRemoveId))
+        })
+        .catch(err => console.log(err))
+        .finally(()=>{
+          handlePopupLoader(false)
+        })
     closeAllPopups()
   }
   
@@ -85,18 +97,35 @@ function App() {
     setSelectedCard({ name: "", link: "" })
   }
   
+  const handlePopupLoader = (isLoading) => {
+    setIsLoading(isLoading)
+    console.log(isLoading)
+  }
+  
   const handleUpdateUser = (newUserInfo) => {
-    api.setUserInfo(newUserInfo).then((newFetchedData) => {
-      setCurrentUser(newFetchedData)
-      closeAllPopups()
-    }).catch()
+    handlePopupLoader(true)
+    api.setUserInfo(newUserInfo)
+        .then((newFetchedData) => {
+          setCurrentUser(newFetchedData)
+          closeAllPopups()
+        })
+        .catch()
+        .finally(() => {
+          handlePopupLoader(false)
+        })
   }
   
   const handleUpdateAvatar = (newAvatar) => {
-    api.setUserAvatar(newAvatar).then((newFetchedAvatar) => {
-      setCurrentUser(newFetchedAvatar)
-      closeAllPopups()
-    })
+    handlePopupLoader(true)
+    api.setUserAvatar(newAvatar)
+        .then((newFetchedAvatar) => {
+          setCurrentUser(newFetchedAvatar)
+          closeAllPopups()
+        })
+        .catch()
+        .finally(() => {
+          handlePopupLoader(false)
+        })
   }
   
   // Изначальный фетч с сервера
@@ -105,10 +134,12 @@ function App() {
     api.getSetOfPlaces()
         .then((places) => {
           setCards(places)
-        }).catch(error => {
-      console.log(error)
-    })
-    api.getUserInfo().then(r => setCurrentUser(r))
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    api.getUserInfo()
+        .then(r => setCurrentUser(r))
   }, [])
   
   return (
@@ -126,19 +157,22 @@ function App() {
             <Footer/>
             
             <EditAvatarPopup isOpen={ isEditAvatarPopupOpen }
+                             isLoading={ isLoading }
                              onClose={ closeAllPopups }
                              onUpdateAvatar={ handleUpdateAvatar }/>
             
             <EditProfilePopup isOpen={ isEditProfilePopupOpen }
+                              isLoading={ isLoading }
                               onClose={ closeAllPopups }
                               onUpdateUser={ handleUpdateUser }/>
             
             <AddPlacePopup isOpen={ isAddPlacePopupOpen }
+                           isLoading={ isLoading }
                            onClose={ closeAllPopups }
                            onPlaceAdd={ handleAddPlaceSubmit }/>
             
-            <PopupWithConfirmation name="confirm"
-                                   isOpen={ isConfirmationPopupOpen }
+            <PopupWithConfirmation isOpen={ isConfirmationPopupOpen }
+                                   isLoading={ isLoading }
                                    onClose={ closeAllPopups }
                                    onSubmit={ handleCardDelete }
                                    card={ cardToRemoveId }/>

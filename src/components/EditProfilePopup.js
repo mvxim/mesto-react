@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react"
 import { CurrentUserContext } from "../contexts/CurrentUserContext"
 import PopupWithForm from "./PopupWithForm"
 
-function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
+function EditProfilePopup({ isOpen, onClose, onUpdateUser, isLoading }) {
   
   const currentUser = useContext(CurrentUserContext)
   
@@ -35,6 +35,7 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
                      title="Редактировать профиль"
                      buttonText="Сохранить"
                      isOpen={ isOpen }
+                     isLoading={ isLoading }
                      onClose={ onClose }
                      onSubmit={ handleSubmit }>
         <input aria-label="Поле ввода для имени"

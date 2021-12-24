@@ -1,7 +1,7 @@
 import { useContext, useRef } from "react"
 import PopupWithForm from "./PopupWithForm"
 
-function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
+function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, isLoading }) {
   
   const userAvatar = useRef()
   
@@ -15,6 +15,7 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
                      title="Обновить аватар"
                      buttonText="Сохранить"
                      isOpen={ isOpen }
+                     isLoading={ isLoading }
                      onClose={ onClose }
                      onSubmit={ handleSubmit }>
         <input aria-label="Поле ввода для ссылки на картинку"

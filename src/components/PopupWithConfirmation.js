@@ -2,6 +2,7 @@ import PopupWithForm from "./PopupWithForm"
 
 function PopupWithConfirmation({
                                  isOpen,
+                                 isLoading,
                                  onClose,
                                  onSubmit,
                                  card
@@ -17,6 +18,7 @@ function PopupWithConfirmation({
                      title="Вы уверены?"
                      buttonText="Да"
                      isOpen={ isOpen }
+                     isLoading={ isLoading }
                      onClose={ onClose }
                      onSubmit={ handleConfirmationAction }>
       </PopupWithForm>

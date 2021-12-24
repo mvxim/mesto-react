@@ -1,7 +1,7 @@
 import { useState } from "react"
 import PopupWithForm from "./PopupWithForm"
 
-function AddPlacePopup({ isOpen, onClose, onPlaceAdd }) {
+function AddPlacePopup({ isOpen, onClose, onPlaceAdd, isLoading }) {
   
   const [ cardName, setCardName ] = useState("")
   const [ cardImageLink, setCardImageLink ] = useState("")
@@ -26,6 +26,7 @@ function AddPlacePopup({ isOpen, onClose, onPlaceAdd }) {
                      title="Новое место"
                      buttonText="Создать"
                      isOpen={ isOpen }
+                     isLoading={ isLoading }
                      onClose={ onClose }
                      onSubmit={ handleSubmit }>
         <input aria-label="Поле ввода для названия карточки"
