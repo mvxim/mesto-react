@@ -1,4 +1,4 @@
-import { useContext, useRef } from "react"
+import { useRef } from "react"
 import PopupWithForm from "./PopupWithForm"
 
 function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, isLoading }) {
@@ -11,21 +11,25 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, isLoading }) {
   }
   
   return (
-      <PopupWithForm name="avatar"
-                     title="Обновить аватар"
-                     buttonText="Сохранить"
-                     isOpen={ isOpen }
-                     isLoading={ isLoading }
-                     onClose={ onClose }
-                     onSubmit={ handleSubmit }>
-        <input aria-label="Поле ввода для ссылки на картинку"
-               className="modal__input modal__input_field_avatar"
-               id="field_avatar"
-               name="avatar-field-url"
-               placeholder="Ссылка на новую картинку профиля"
-               required
-               type="url"
-               ref={ userAvatar }/>
+      <PopupWithForm
+          name="avatar"
+          title="Обновить аватар"
+          buttonText="Сохранить"
+          isOpen={ isOpen }
+          isLoading={ isLoading }
+          onClose={ onClose }
+          onSubmit={ handleSubmit }
+      >
+        <input
+            aria-label="Поле ввода для ссылки на картинку"
+            className="modal__input modal__input_field_avatar"
+            id="field_avatar"
+            name="avatar-field-url"
+            placeholder="Ссылка на новую картинку профиля"
+            required
+            type="url"
+            ref={ userAvatar }
+        />
         <span className="modal__error modal__error_field_avatar"/>
       </PopupWithForm>
   )

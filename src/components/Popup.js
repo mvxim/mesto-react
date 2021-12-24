@@ -22,14 +22,19 @@ const Popup = ({ isOpen, name, onClose, children }) => {
   }
   
   return (
-      <section className={ `modal modal_type_${ name } page__modal ${ isOpen ? "modal_active" : "" }` }
-               onClick={ handleOverlay }>
-        <div className="modal__container">
-          <button className="modal__close-btn"
-                  type="button"
-                  onClick={ onClose }/>
+      <section
+          className={ `modal modal_type_${ name } page__modal ${ isOpen ? "modal_active" : "" }` }
+          onClick={ handleOverlay }
+      >
+        <div className={ `modal__${ name === "picture" ? "figure" : "container" }` }>
+          <button
+              className="modal__close-btn"
+              type="button"
+              onClick={ onClose }
+          />
           { children }
         </div>
+      
       </section>
   )
 }

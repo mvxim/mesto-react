@@ -1,7 +1,10 @@
 class Api {
-  constructor({ baseUrl, headers }) {
-    this._url = baseUrl
-    this._headers = headers
+  constructor( token ) {
+    this._url = "https://nomoreparties.co/v1/cohort-30/"
+    this._headers = {
+      authorization: token,
+      "Content-Type": "application/json"
+    }
   }
   
   _onResponse(res) {
@@ -43,7 +46,7 @@ class Api {
     }).then(this._onResponse)
   }
   
-  getSetOfPlaces() {
+  getPlaces() {
     return fetch(`${ this._url }cards`, {
       method: "GET",
       headers: this._headers
@@ -64,17 +67,10 @@ class Api {
   }
   
   changeLikeCardStatus(cardId, isLiked) {
-    if (isLiked) {
-      return fetch(`${ this._url }cards/likes/${ cardId }`, {
-        method: "DELETE",
-        headers: this._headers,
-      }).then(this._onResponse)
-    } else {
-      return fetch(`${ this._url }cards/likes/${ cardId }`, {
-        method: "PUT",
-        headers: this._headers,
-      }).then(this._onResponse)
-    }
+    return fetch(`${ this._url }cards/likes/${ cardId }`, {
+      method: `${ isLiked ? "DELETE" : "PUT" }`,
+      headers: this._headers,
+    }).then(this._onResponse)
   }
   
   removePlace(cardId) {
@@ -85,12 +81,6 @@ class Api {
   }
 }
 
-const api = new Api({
-  baseUrl: "https://nomoreparties.co/v1/cohort-30/",
-  headers: {
-    authorization: "a2e8d35a-8087-4045-b36f-fee28ac34f65",
-    "Content-Type": "application/json"
-  }
-})
+ const api = new Api("a2e8d35a-8087-4045-b36f-fee28ac34f65")
 
 export default api
