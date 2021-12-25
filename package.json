@@ -1,6 +1,13 @@
 {
+  "author": {
+    "name" : "Maxim Donika",
+    "email" : "donika.maxim@gmail.com",
+    "url" : "https://github.com/mvxim"
+  },
   "name": "mesto-react",
+  "description": "Учебный проект «Место»: адаптивная и интерактивная страница с галереей фотографий. Портирован на React с сохранением функциональности.",
   "version": "0.1.0",
+  "homepage": ".",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.1",
@@ -15,7 +22,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -34,5 +43,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "gh-pages": "^3.2.3"
   }
 }

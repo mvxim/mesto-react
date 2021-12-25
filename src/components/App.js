@@ -1,3 +1,4 @@
+import "../index.css"
 import { useEffect, useState } from "react"
 import { CurrentUserContext } from "../contexts/CurrentUserContext"
 import api from "../utils/api"
