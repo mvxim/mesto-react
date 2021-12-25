@@ -1,9 +1,26 @@
-import { useEffect } from "react"
+import { useEffect, useLayoutEffect } from "react"
 
 const Popup = ({ isOpen, name, onClose, children }) => {
   
+  
+  const documentWidth = document.documentElement.clientWidth;
+  const windowWidth = window.innerWidth;
+  const scrollBarWidth = windowWidth - documentWidth;
+  
+  useLayoutEffect(() => {
+    if (!isOpen) return
+    
+    document.body.style.overflow = "hidden"
+    document.body.style.paddingRight = `${scrollBarWidth}px`;
+    return () => {
+      document.body.style.overflow = "auto"
+      document.body.style.paddingRight = null;
+    }
+  }, [isOpen, scrollBarWidth])
+  
   useEffect(() => {
     if (!isOpen) return
+    
     
     const closeByEscape = (e) => {
       if (e.key === "Escape") {
@@ -13,6 +30,7 @@ const Popup = ({ isOpen, name, onClose, children }) => {
     
     document.addEventListener("keydown", closeByEscape)
     return () => document.removeEventListener("keydown", closeByEscape)
+    
   }, [ isOpen, onClose ])
   
   const handleOverlay = (e) => {
@@ -20,6 +38,7 @@ const Popup = ({ isOpen, name, onClose, children }) => {
       onClose()
     }
   }
+  
   
   return (
       <section
