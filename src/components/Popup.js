@@ -1,26 +1,27 @@
-import { useEffect, useLayoutEffect } from "react"
+import { useEffect } from "react"
 
 const Popup = ({ isOpen, name, onClose, children }) => {
   
+
   
-  const documentWidth = document.documentElement.clientWidth;
-  const windowWidth = window.innerWidth;
-  const scrollBarWidth = windowWidth - documentWidth;
-  
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (!isOpen) return
+  
+    const documentWidth = document.documentElement.clientWidth;
+    const windowWidth = window.innerWidth;
+    const scrollBarWidth = windowWidth - documentWidth;
     
     document.body.style.overflow = "hidden"
     document.body.style.paddingRight = `${scrollBarWidth}px`;
+    
     return () => {
       document.body.style.overflow = "auto"
       document.body.style.paddingRight = null;
     }
-  }, [isOpen, scrollBarWidth])
+  }, [isOpen])
   
   useEffect(() => {
     if (!isOpen) return
-    
     
     const closeByEscape = (e) => {
       if (e.key === "Escape") {

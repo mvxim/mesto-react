@@ -5,7 +5,7 @@ function Header() {
       <header className="header page__header">
         <a
             className="header__link"
-            href="#"
+            href="/#"
         >
           <img
               alt="Логотип сервиса «Место»."

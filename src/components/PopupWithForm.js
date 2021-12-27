@@ -1,3 +1,4 @@
+import Form from "./Form"
 import Popup from "./Popup"
 
 function PopupWithForm({
@@ -8,7 +9,8 @@ function PopupWithForm({
   isOpen,
   onClose,
   onSubmit,
-  isLoading
+  isLoading,
+  isFormValid
 }) {
   return (
       <Popup
@@ -16,20 +18,16 @@ function PopupWithForm({
           name={ name }
           onClose={ onClose }
       >
-        <form
-            className="modal__form"
-            name={ `${ name }-form` }
+        <Form
+            name={ name }
+            title={ title }
             onSubmit={ onSubmit }
+            buttonText={ buttonText }
+            isLoading={ isLoading }
+            isValid={ isFormValid }
         >
-          <h2 className="modal__title">{ title }</h2>
           { children }
-          <button
-              className="button modal__button"
-              type="submit"
-          >
-            { isLoading ? "⏳ Сохранение..." : buttonText }
-          </button>
-        </form>
+        </Form>
       </Popup>
   )
 }
