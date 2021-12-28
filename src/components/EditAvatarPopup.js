@@ -8,14 +8,14 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, isLoading }) {
   
   const handleSubmit = (e) => {
     e.preventDefault()
-    onUpdateAvatar(values["avatar-field-url"])
+    onUpdateAvatar(values.avatar)
   }
   
   useEffect(() => {
     resetForm()
-  }, [resetForm])
+  }, [ resetForm, isOpen ])
   
-    return (
+  return (
       <PopupWithForm
           name="avatar"
           title="Обновить аватар"
@@ -28,17 +28,17 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, isLoading }) {
       >
         <input
             aria-label="Поле ввода для ссылки на картинку"
-            className={ `modal__input modal__input_field_avatar ${ errors["avatar-field-url"] ? "modal__input_error" : "" }` }
+            className={ `modal__input modal__input_field_avatar ${ errors.avatar ? "modal__input_error" : "" }` }
             id="field_avatar"
-            name="avatar-field-url"
+            name="avatar"
             placeholder="Ссылка на новую картинку профиля"
             required
             type="url"
-            value={ values["avatar-field-url"] || ""}
+            value={ values.avatar || "" }
             onChange={ handleChange }
         />
         <span className="modal__error modal__error_field_avatar">
-          { errors["avatar-field-url"] }
+          { errors.avatar }
         </span>
       
       </PopupWithForm>

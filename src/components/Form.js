@@ -9,10 +9,10 @@ const Form = ({
           onSubmit={ onSubmit }
       >
         <h2 className="modal__title">{ title }</h2>
-        { children }
+        { name === "confirm" ? null : children }
         <button
-            disabled={ !isValid }
-            className={ `button modal__button ${ isValid ? "" : "modal__button_disabled" }` }
+            disabled={ name === "confirm" ? false : !isValid || isLoading }
+            className={ `button modal__button ${ isValid && !isLoading ? "" : "modal__button_disabled" }` }
             type="submit"
         >
           { isLoading ? "⏳ Сохранение..." : buttonText }

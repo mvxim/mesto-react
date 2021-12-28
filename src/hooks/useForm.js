@@ -22,10 +22,11 @@ const useForm = () => {
     setIsValid(event.target.closest(".modal__form").checkValidity())
   }
   
-  const resetForm = useCallback(() => {
-    setValues({})
-    setErrors({})
-  }, [setValues, setErrors])
+  const resetForm = useCallback((newValues = {}, newErrors = {}, newIsValid = false ) => {
+    setValues(newValues)
+    setErrors(newErrors)
+    setIsValid(newIsValid)
+  }, [ setValues, setErrors, setIsValid ])
   
   
   return {
